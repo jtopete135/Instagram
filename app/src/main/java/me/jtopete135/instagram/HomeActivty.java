@@ -31,6 +31,11 @@ public class HomeActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_activty);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher_foreground);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         etDescription = findViewById(R.id.etDescription);
         btnCreate = findViewById(R.id.btnCreate);
         btnRefresh = findViewById(R.id.btnRefresh);
@@ -46,6 +51,7 @@ public class HomeActivty extends AppCompatActivity {
             }
         });
 
+        //Listener for refresh button
         btnRefresh.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

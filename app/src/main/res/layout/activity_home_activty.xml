@@ -20,7 +20,7 @@
         android:id="@+id/btnRefresh"
         android:layout_width="381dp"
         android:layout_height="42dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/bottom_navigation"
         android:layout_alignParentStart="true"
         android:text="Refresh"
         tools:layout_editor_absoluteX="0dp"
@@ -37,5 +37,16 @@
         android:inputType="textPersonName"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="342dp" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu_bottom_navigation" />
 
 </RelativeLayout>
