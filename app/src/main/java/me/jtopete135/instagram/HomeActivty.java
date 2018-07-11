@@ -1,8 +1,14 @@
 package me.jtopete135.instagram;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,48 +23,58 @@ import com.parse.SaveCallback;
 import java.io.File;
 import java.util.List;
 
+import me.ProfileFragment;
 import me.jtopete135.instagram.model.Post;
 
 public class HomeActivty extends AppCompatActivity {
 
     private static String imagePath = "/sdcard/DCIM/Camera/IMG_20180709_172945.jpg";
-    private EditText etDescription;
-    private Button btnCreate;
-    private Button btnRefresh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_activty);
 
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setLogo(R.mipmap.ic_launcher_foreground);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-        etDescription = findViewById(R.id.etDescription);
-        btnCreate = findViewById(R.id.btnCreate);
-        btnRefresh = findViewById(R.id.btnRefresh);
 
-        btnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String description = etDescription.getText().toString();
-                final ParseUser user = ParseUser.getCurrentUser();
-                final File file = new File(imagePath);
-                final ParseFile parseFile = new ParseFile(file);
-                createPost(description, parseFile, user );
-            }
-        });
+        final Fragment fragment1 = new HomeFragment();
+        final Fragment fragment2 = new ComposeFragment();
+        final Fragment fragment3 = new ProfileFragment();
 
-        //Listener for refresh button
-        btnRefresh.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                loadTopPosts();
-            }
-        });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+
+
+
+        // handle navigation selection
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_home:
+                                FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
+                                fragmentTransaction1.replace(R.id.frag_placeholder, fragment1).commit();
+                                return true;
+                            case R.id.action_compose:
+                                FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+                                fragmentTransaction2.replace(R.id.frag_placeholder, fragment2).commit();
+                                return true;
+                            case R.id.action_profile:
+                                FragmentTransaction fragmentTransaction3 = fragmentManager.beginTransaction();
+                                fragmentTransaction3.replace(R.id.frag_placeholder, fragment3).commit();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
 
     }
 
