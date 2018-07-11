@@ -6,20 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.parse.Parse;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 
 import java.util.List;
 
 import me.jtopete135.instagram.model.Post;
-
-import static me.jtopete135.instagram.R.drawable.flicks_movie_placeholder;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
@@ -48,23 +45,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         Post post = mPosts.get(position);
         TextView tvUsername = holder.tvUsername;
         TextView tvDescription = holder.tvDescription;
-        ImageView ivPostImage = holder.ivPostImage;
+        ParseImageView ivPostImage = holder.ivPostImage;
 
 
         tvUsername.setText(post.getUser().getUsername());
         tvDescription.setText(post.getDescription());
 
+
         ParseFile imageFile = post.getImage();
 
 
-        Glide.with(context)
-                .load(imageFile)
-                .apply(
-                        RequestOptions.placeholderOf(R.drawable.flicks_movie_placeholder)
-                                .error(R.drawable.flicks_movie_placeholder)
-                                .fitCenter()
-                )
-                .into(ivPostImage);
+        ivPostImage.setParseFile(post.getImage());
+        ivPostImage.loadInBackground();
 
     }
 
@@ -80,7 +72,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         // for any view that will be set as you render a row
         public TextView tvUsername;
         public TextView tvDescription;
-        public ImageView ivPostImage;
+        public ParseImageView ivPostImage;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -91,7 +83,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
-            ivPostImage = (ImageView) itemView.findViewById(R.id.ivPostImage);
+            ivPostImage = (ParseImageView) itemView.findViewById(R.id.ivPostImage);
 
 
         }
