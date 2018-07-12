@@ -45,9 +45,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         Post post = mPosts.get(position);
         TextView tvUsername = holder.tvUsername;
         TextView tvDescription = holder.tvDescription;
+        TextView tvUsername2 = holder.tvUsername2;
         ParseImageView ivPostImage = holder.ivPostImage;
 
-
+        tvUsername2.setText(post.getUser().getUsername() + " ");
         tvUsername.setText(post.getUser().getUsername());
         tvDescription.setText(post.getDescription());
 
@@ -73,6 +74,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public TextView tvUsername;
         public TextView tvDescription;
         public ParseImageView ivPostImage;
+        public TextView tvUsername2;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -84,8 +86,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             ivPostImage = (ParseImageView) itemView.findViewById(R.id.ivPostImage);
+            tvUsername2 = (TextView) itemView.findViewById(R.id.tvUsername2);
 
 
         }
     }
+
+
 }

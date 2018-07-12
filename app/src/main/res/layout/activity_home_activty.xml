@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/frag_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="1096dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:background="@android:color/background_light"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,6 +43,9 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private SwipeRefreshLayout swipeContainer;
+
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -77,9 +81,32 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView rvPosts = (RecyclerView) view.findViewById(R.id.rvPosts);
+        final RecyclerView rvPosts = (RecyclerView) view.findViewById(R.id.rvPosts);
+
+
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                loadTopPosts(rvPosts);
+                swipeContainer.setRefreshing(false);
+
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         loadTopPosts(rvPosts);
+
         return view;
 
     }
@@ -151,5 +178,8 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public interface OnItemSelectedListener {
     }
 }
