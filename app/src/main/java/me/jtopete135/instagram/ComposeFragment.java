@@ -2,6 +2,9 @@ package me.jtopete135.instagram;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -81,6 +86,13 @@ public class ComposeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compose, container, false);
         ivPostImage = view.findViewById(R.id.ivPostImage);
+
+        //gets image from camera and places it in image view
+        if(imagePath != null){
+            Glide.with(view)
+                    .load(imagePath)
+                    .into(ivPostImage);
+        }
         etDescription = view.findViewById(R.id.etDescription);
         btnPost = view.findViewById(R.id.btnPost);
 
@@ -91,10 +103,19 @@ public class ComposeFragment extends Fragment {
                 File file = new File(imagePath);
                 ParseFile imageFile = new ParseFile(file);
                 createPost(description,imageFile, ParseUser.getCurrentUser());
+                clearfragment(view);
+                Toast.makeText(view.getContext(), "Post successful", Toast.LENGTH_LONG).show();
             }
         });
 
         return view;
+    }
+
+    private void clearfragment(View view) {
+        etDescription.setText("");
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_image_placeholder);
+        ivPostImage.setImageDrawable(drawable);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

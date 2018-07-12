@@ -14,7 +14,7 @@
         android:layout_height="105dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:src="@android:color/black" />
+        android:src="@drawable/ic_image_placeholder" />
 
     <EditText
         android:id="@+id/etDescription"

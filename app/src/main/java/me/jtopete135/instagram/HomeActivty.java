@@ -84,6 +84,7 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                         switch (item.getItemId()) {
                             case R.id.action_home:
                                 FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
@@ -99,6 +100,7 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
                                 fragmentTransaction3.replace(R.id.frag_placeholder, profileFragment).commit();
                                 return true;
                         }
+                        findViewById(R.id.action_home).setSelected(false);
                         return false;
                     }
                 });
@@ -151,9 +153,6 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
             ComposeFragment cfrag = ComposeFragment.newInstance(photoFile.getAbsolutePath());
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frag_placeholder, cfrag).commit();
-            Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-            Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(takenImage, RESIZE_WIDTH);
-            cfrag.ivPostImage.setImageBitmap(resizedBitmap);
         }
     }
 
