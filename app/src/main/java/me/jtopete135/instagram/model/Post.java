@@ -1,10 +1,14 @@
 package me.jtopete135.instagram.model;
 
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
@@ -31,6 +35,10 @@ public class Post extends ParseObject {
 
     public ParseUser getUser(){
         return getParseUser(KEY_USER);
+    }
+
+    public Date getDate(){
+        return getCreatedAt();
     }
 
     public void setUser(ParseUser user){

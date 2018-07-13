@@ -2,14 +2,11 @@ package me.jtopete135.instagram;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.AppLaunchChecker;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,26 +14,14 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
-
-import me.ProfileFragment;
-import me.jtopete135.instagram.model.Post;
 
 public class HomeActivty extends AppCompatActivity implements ProfileFragment.OnItemSelectedListener {
 
@@ -62,14 +47,10 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_activty);
 
-
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher_foreground);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -105,6 +86,14 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
                     }
                 });
 
+    }
+
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
     }
 
     public void onLaunchCamera(View view) {

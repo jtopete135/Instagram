@@ -34,8 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/instagram_android_assets/drawable/ufi_save.png" />
-                                      <entry key="outputName" value="ic_save" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/instagram_android_assets/drawable-xxhdpi/nav_inbox_paper_plane.png" />
+                                      <entry key="outputName" value="ic_dm" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="000000" />
                                     </map>
@@ -59,17 +59,25 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="foregroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="94" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ffffff" />
-                                      <entry key="backgroundLayerName" value="ic_image_placeholder_back" />
-                                      <entry key="foregroundAssetType" value="CLIP_ART" />
                                       <entry key="foregroundImage" value="$USER_HOME$/Downloads/instagram_android_assets/instagram_android_assets/drawable-xxhdpi/nav_logo_whiteout.png" />
-                                      <entry key="foregroundLayerName" value="ic_image_placeholder_fore" />
-                                      <entry key="outputName" value="ic_image_placeholder" />
+                                      <entry key="showGrid" value="true" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -87,11 +95,6 @@
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

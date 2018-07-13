@@ -3,6 +3,7 @@ package me.jtopete135.instagram;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,20 @@ import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 
+import org.w3c.dom.Text;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import me.jtopete135.instagram.model.Post;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
-    Context context;
+    private Context context;
     private List<Post> mPosts;
 
     public FeedAdapter(List<Post> posts) {
@@ -40,20 +48,43 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         return viewHolder;
     }
 
+    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+    public String getRelativeTimeAgo(Post post) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        DateFormat df = new SimpleDateFormat(twitterFormat,Locale.getDefault());
+        String date = df.format(post.getDate());
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(date).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
+    }
+
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = mPosts.get(position);
         TextView tvUsername = holder.tvUsername;
         TextView tvDescription = holder.tvDescription;
         TextView tvUsername2 = holder.tvUsername2;
+        TextView tvTime = holder.tvTime;
         ParseImageView ivPostImage = holder.ivPostImage;
+        String time = getRelativeTimeAgo(post);
 
-        tvUsername2.setText(post.getUser().getUsername() + " ");
+
+        tvUsername2.setText(post.getUser().getUsername());
         tvUsername.setText(post.getUser().getUsername());
         tvDescription.setText(post.getDescription());
+        tvTime.setText(time);
 
-
-        ParseFile imageFile = post.getImage();
 
 
         ivPostImage.setParseFile(post.getImage());
@@ -75,6 +106,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public TextView tvDescription;
         public ParseImageView ivPostImage;
         public TextView tvUsername2;
+        public TextView tvTime;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -87,6 +119,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             ivPostImage = (ParseImageView) itemView.findViewById(R.id.ivPostImage);
             tvUsername2 = (TextView) itemView.findViewById(R.id.tvUsername2);
+            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
 
 
         }

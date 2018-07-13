@@ -1,8 +1,6 @@
-package me;
+package me.jtopete135.instagram;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,10 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
-
-import me.jtopete135.instagram.HomeActivty;
-import me.jtopete135.instagram.MainActivity;
-import me.jtopete135.instagram.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +32,7 @@ public class ProfileFragment extends Fragment {
     private OnItemSelectedListener mListener;
 
     Button btnLogout;
+    TextView tvUsername;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -75,13 +70,16 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         btnLogout = view.findViewById(R.id.btnLogout);
+        tvUsername = view.findViewById(R.id.tvUsername);
 
+        tvUsername.setText(ParseUser.getCurrentUser().getUsername());
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onButtonPressed();
             }
         });
+
 
         return view;
     }
