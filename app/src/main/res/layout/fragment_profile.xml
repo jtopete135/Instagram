@@ -19,43 +19,58 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView
-        android:id="@+id/tvUserLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="Username:"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
-
-    <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvUserLabel"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
         android:layout_toEndOf="@+id/tvUserLabel"
         android:text="TextView"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/tvUserLabel"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivProfileImage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ivProfileImage"
+        app:layout_constraintTop_toTopOf="@+id/btnEdit" />
 
-    <ImageView
+    <com.parse.ParseImageView
         android:id="@+id/ivProfileImage"
         android:layout_width="66dp"
-        android:layout_height="67dp"
+        android:layout_height="66dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/ic_image_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="228dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="76dp"
+        android:background="@color/blue_5"
+        android:text="Follow"
+        android:textColor="@android:color/background_light"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="56dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="Edit"
+        android:textColor="@color/blue_5"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivProfileImage"
+        app:layout_constraintStart_toStartOf="@+id/ivProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfileImage" />
 </android.support.constraint.ConstraintLayout>

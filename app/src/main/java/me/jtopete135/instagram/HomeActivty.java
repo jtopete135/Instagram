@@ -1,7 +1,10 @@
 package me.jtopete135.instagram;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -11,17 +14,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class HomeActivty extends AppCompatActivity implements ProfileFragment.OnItemSelectedListener {
 
@@ -35,7 +50,8 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     public final String APP_TAG = "Instagram";
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int COMPOSE_REQUEST_CODE = 1034;
+    public final static int PROFILE_REQUEST_CODE = 1035;
     public String photoFileName = "photo.jpg";
     File photoFile;
 
@@ -74,7 +90,11 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
                             case R.id.action_compose:
                                 FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
                                 fragmentTransaction2.replace(R.id.frag_placeholder, composeFragment).commit();
-                                onLaunchCamera(findViewById(R.id.frag_placeholder));
+                                try {
+                                    onLaunchCamera(findViewById(R.id.frag_placeholder),COMPOSE_REQUEST_CODE);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 return true;
                             case R.id.action_profile:
                                 FragmentTransaction fragmentTransaction3 = fragmentManager.beginTransaction();
@@ -96,7 +116,7 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
         return true;
     }
 
-    public void onLaunchCamera(View view) {
+    public void onLaunchCamera(View view, int requestCode) throws IOException {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference to access to future access
@@ -108,11 +128,12 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
         Uri fileProvider = FileProvider.getUriForFile(HomeActivty.this, "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
+
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Start the image capture intent to take photo
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            startActivityForResult(intent, requestCode);
         }
     }
 
@@ -145,24 +166,58 @@ public class HomeActivty extends AppCompatActivity implements ProfileFragment.On
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == COMPOSE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 newFrag = true;
-            } else { // Result was a failure
+            }
+            else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if(requestCode == PROFILE_REQUEST_CODE){
+            if (resultCode == RESULT_OK) {
+                // See code above
+                File takenPhotoUri = getPhotoFileUri(photoFileName);
+// by this point we have the camera photo on disk
+                Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+// See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
+                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, RESIZE_WIDTH);
+                ImageView iv = (((ProfileFragment)profileFragment).ivProfileImage);
+                Glide.with(this).load(resizedBitmap).apply(RequestOptions.circleCropTransform()).into(iv);
+                ParseFile parseImage = new ParseFile(photoFile);
+                //updates users profile image
+                ParseUser user = ParseUser.getCurrentUser();
+                user.put("profileImage",parseImage);
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ProfileActivity", "Profile pic updated", e);
+                    }
+                });
+            }
+            else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
-    public void onRssItemSelected(String fragment) {
-        if (fragment == "profile"){
+    public void onRssItemSelected(int code) {
+        if (code == ProfileFragment.LOGOUT_CODE){
             ParseUser.logOut();
             Intent intent = new Intent(HomeActivty.this, MainActivity.class);
             startActivity(intent);
             finish();
+        }
+        else if(code == ProfileFragment.EDIT_CODE){
+            try {
+                onLaunchCamera(findViewById(R.id.frag_placeholder),PROFILE_REQUEST_CODE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
@@ -77,6 +78,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         TextView tvUsername2 = holder.tvUsername2;
         TextView tvTime = holder.tvTime;
         ParseImageView ivPostImage = holder.ivPostImage;
+        ParseImageView ivProfileImage = holder.ivProfileImage;
         String time = getRelativeTimeAgo(post);
 
 
@@ -85,6 +87,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         tvDescription.setText(post.getDescription());
         tvTime.setText(time);
 
+        if(post.getUser().get("profileImage") != null){
+            ParseFile file = post.getUser().getParseFile("profileImage");
+            Glide.with(context).load(file.getUrl()).apply(RequestOptions.circleCropTransform()).into(ivProfileImage);
+            ivProfileImage.loadInBackground();
+        }
 
 
         ivPostImage.setParseFile(post.getImage());
@@ -107,6 +114,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public ParseImageView ivPostImage;
         public TextView tvUsername2;
         public TextView tvTime;
+        public ParseImageView ivProfileImage;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -120,6 +128,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             ivPostImage = (ParseImageView) itemView.findViewById(R.id.ivPostImage);
             tvUsername2 = (TextView) itemView.findViewById(R.id.tvUsername2);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
+            ivProfileImage = (ParseImageView) itemView.findViewById(R.id.ivProfileImage);
+
 
 
         }
